@@ -109,7 +109,7 @@
             header.classList.replace('visible', 'invisible')
             button.style.top = '75%'
             button.style.transform = 'translate(-50%,-50%) scale(1.4)'
-            fetch('http://www.boredapi.com/api/activity/')
+            fetch('https://www.boredapi.com/api/activity/')
             .then(res => res.json())
             .then(data => {
                 console.log(data)
