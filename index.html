@@ -1,129 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bored</title>
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
-    *,*::before,*::after{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    body{
-        background: rgb(0, 0, 0);
-    }
-    #container{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgb(128, 193, 254);
-        flex-direction: column;
-        min-width: 750px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        padding: 35px 15px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(255,255,255,0.2);
-        cursor: pointer;
-    }
-    #container > *{
-        color: rgb(0, 0, 0);
-        font-family: sans-serif;
-        font-size: 1.45rem;
-    }
-    .poppins{
-        font-family: 'Poppins',sans-serif;
-    }
-    .montserrat{
-        font-family: 'Montserrsat',sans-serif;
-        font-size: 1.5rem;
-    }
-    .bold{
-        font-weight: bold;
-    }
-    a{
-        text-decoration: none;
-        color: white;
-    }
-    .animation{
-        animation: fade 1.75s linear infinite;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
-    }
-    @keyframes fade{
-        25%{
-            opacity: 55%;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        50%{
-            opacity: 75%;
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1c1b29;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        100%{
-            opacity: 100%;
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background: #29283d;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
         }
-    }
-    .invisible{
-        opacity: 0;
-    }
-    .visible{
-        opacity: 100%;
-    }
-    #button{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%) scale(2.3);
-        padding: 15px 75px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        font-family: 'Poppins',sans-serif;
-    }
-    h1{
-        text-align: center;
-        font-family: 'Montserrat',sans-serif;
-        color: white;
-        padding-top: 65px;
-    }
+
+        .container h1 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #5453a6;
+            color: #fff;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #6b6ab7;
+        }
+
+        .section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #6b6ab7;
+            text-align: left;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            margin-bottom: 5px;
+        }
+
+        .section .link {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .section .link:hover {
+            color: #a09fff;
+        }
     </style>
 </head>
+
 <body>
-    <h1 id="header" class="visible">
-        Feeling bored, Click the button below to find a fun activity
-    </h1>
-    <div id="container" class="invisible">
-        <p id="activity">Activity</p>
-        <p id="type">Type</p>
-        <p id="participants">Participants</p>
-        <p id="accessibilty">Accessibilty</p>
+    <div class="container">
+        <h1>Feeling bored? Click the button below to find a fun activity.</h1>
+        <button class="btn" id="button">Get Activity 😃</button>
+        <div class="section" id="activity-section">
+            <h2>Activity</h2>
+            <p id="activity"></p>
+        </div>
+        <div class="section" id="type-section">
+            <h2>Type</h2>
+            <p id="type"></p>
+        </div>
+        <div class="section" id="participants-section">
+            <h2>Participants</h2>
+            <p id="participants"></p>
+        </div>
+        <div class="section" id="accessibility-section">
+            <h2>Accessibility</h2>
+            <p id="accessibility"></p>
+        </div>
     </div>
-    <button id="button">Get activity 😃</button> 
 
     <script>
-        function fetchActivity(){
-            container.classList.replace('invisible', 'visible')
-            header.classList.replace('visible', 'invisible')
-            button.style.top = '75%'
-            button.style.transform = 'translate(-50%,-50%) scale(1.4)'
+        const button = document.getElementById('button');
+        const activityElement = document.getElementById('activity');
+        const typeElement = document.getElementById('type');
+        const participantsElement = document.getElementById('participants');
+        const accessibilityElement = document.getElementById('accessibility');
+
+        function fetchActivity() {
             fetch('https://www.boredapi.com/api/activity/')
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                if(data.link){
-                    activity.innerHTML = `<span class='poppins'>Activity : </span><a href=${data.link}><span class='montserrat bold animation'>${data.activity}</span></a>`;
-                }else{
-                    activity.innerHTML = `<span class='poppins'>Activity : </span><span class='montserrat'>${data.activity}</span>`;
-                    type.innerHTML = `<span class='poppins'>Type : </span><span class='montserrat'>${data.type}</span>`;
-                    participants.innerHTML = `<span class='poppins'>Participants : </span><span class='montserrat'>${data.participants}</span>`;
-                    accessibilty.innerHTML = `<span class='poppins'>Accessibilty : </span><span class='montserrat'>${data.accessibility}</span>`;
-                }
-            })
-    }
-    button.addEventListener('click', fetchActivity)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    activityElement.innerHTML = data.activity;
+                    typeElement.innerHTML = data.type;
+                    participantsElement.innerHTML = data.participants;
+                    accessibilityElement.innerHTML = data.accessibility;
+                })
+                .catch(error => {
+                    console.log(error);
+                    activityElement.innerHTML = 'Failed to fetch activity.';
+                });
+        }
+
+        button.addEventListener('click', fetchActivity);
     </script>
 </body>
+
 </html>
