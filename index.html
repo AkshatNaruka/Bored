@@ -5,28 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Randomizer</title>
+    <title>Random Links</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>Random Link Generator</h1>
-        <div class="section">
-            <form id="link-form">
-                <input type="url" id="link" placeholder="Enter a link" required>
-                <button type="submit" class="btn">Submit Link</button>
-            </form>
-        </div>
-        <div class="section">
-            <button class="btn" id="random-button">Show Random Link</button>
+        <h1>Random Links</h1>
+        <div class="section center">
+            <button class="glow-on-hover" id="random-button">Show Random Link</button>
             <p id="random-link"></p>
         </div>
+        <a href="form.html" class="link-to-form">Go to Form</a>
     </div>
 
     <script>
-        const form = document.getElementById('link-form');
-        const linkInput = document.getElementById('link');
         const randomButton = document.getElementById('random-button');
         const randomLinkElement = document.getElementById('random-link');
 
@@ -41,18 +34,6 @@
             }
         }
 
-        // Save a new link to localStorage
-        function submitLink(event) {
-            event.preventDefault();
-            const newLink = linkInput.value;
-            let links = JSON.parse(localStorage.getItem('links')) || [];
-            links.push(newLink);
-            localStorage.setItem('links', JSON.stringify(links));
-            linkInput.value = '';
-            alert('Link submitted successfully!');
-        }
-
-        form.addEventListener('submit', submitLink);
         randomButton.addEventListener('click', showRandomLink);
     </script>
 </body>

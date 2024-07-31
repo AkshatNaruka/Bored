@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Link</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Submit a Link</h1>
+        <div class="section">
+            <form id="link-form">
+                <input type="url" id="link" placeholder="Enter a link" required>
+                <button type="submit" class="btn">Submit Link</button>
+            </form>
+        </div>
+        <a href="index.html" class="link-to-form">Back to Random Links</a>
+    </div>
+
+    <script>
+        const form = document.getElementById('link-form');
+        const linkInput = document.getElementById('link');
+
+        // Save a new link to localStorage
+        function submitLink(event) {
+            event.preventDefault();
+            const newLink = linkInput.value;
+            let links = JSON.parse(localStorage.getItem('links')) || [];
+            links.push(newLink);
+            localStorage.setItem('links', JSON.stringify(links));
+            linkInput.value = '';
+            alert('Link submitted successfully!');
+        }
+
+        form.addEventListener('submit', submitLink);
+    </script>
+</body>
+
+</html>
