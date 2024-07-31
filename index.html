@@ -8,80 +8,7 @@
     <title>Bored</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6117529761188568"
      crossorigin="anonymous"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #1c1b29;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            text-align: center;
-            padding: 30px;
-            background: #29283d;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-        }
-
-        .container h1 {
-            font-size: 2rem;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #5453a6;
-            color: #fff;
-            font-size: 1rem;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #6b6ab7;
-        }
-
-        .section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #6b6ab7;
-            text-align: left;
-        }
-
-        .section h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .section p {
-            margin-bottom: 5px;
-        }
-
-        .section .link {
-            color: #fff;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .section .link:hover {
-            color: #a09fff;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -104,6 +31,20 @@
             <h2>Accessibility</h2>
             <p id="accessibility"></p>
         </div>
+
+        <div class="section">
+            <h2>Submit Your Link</h2>
+            <form id="link-form">
+                <input type="url" id="link" placeholder="Enter a link" required>
+                <button type="submit" class="btn">Submit Link</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Random Link</h2>
+            <button class="btn" id="random-button">Show Random Link</button>
+            <p id="random-link"></p>
+        </div>
     </div>
 
     <script>
@@ -112,6 +53,10 @@
         const typeElement = document.getElementById('type');
         const participantsElement = document.getElementById('participants');
         const accessibilityElement = document.getElementById('accessibility');
+        const form = document.getElementById('link-form');
+        const linkInput = document.getElementById('link');
+        const randomButton = document.getElementById('random-button');
+        const randomLinkElement = document.getElementById('random-link');
 
         function fetchActivity() {
             fetch('https://www.boredapi.com/api/activity/')
@@ -129,7 +74,48 @@
                 });
         }
 
+        function showRandomLink() {
+            fetch('links.json')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * data.length);
+                        randomLinkElement.innerHTML = `<a href="${data[randomIndex]}" target="_blank">${data[randomIndex]}</a>`;
+                    } else {
+                        randomLinkElement.innerHTML = 'No links available.';
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    randomLinkElement.innerHTML = 'Failed to fetch links.';
+                });
+        }
+
+        function submitLink(event) {
+            event.preventDefault();
+            const newLink = linkInput.value;
+
+            fetch('saveLink.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ link: newLink })
+            })
+            .then(res => res.json())
+            .then(data => {
+                linkInput.value = '';
+                alert('Link submitted successfully!');
+            })
+            .catch(error => {
+                console.log(error);
+                alert('Failed to submit link.');
+            });
+        }
+
         button.addEventListener('click', fetchActivity);
+        randomButton.addEventListener('click', showRandomLink);
+        form.addEventListener('submit', submitLink);
     </script>
 </body>
 
